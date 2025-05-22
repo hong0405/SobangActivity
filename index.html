@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>소방 안전 방탈출 게임</title>
+  <style>
+    body { font-family: 'Arial', sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
+    header { background: #d32f2f; color: white; text-align: center; padding: 1rem 0; }
+    .container { padding: 20px; max-width: 480px; margin: auto; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .mission { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
+    .mission.locked { opacity: 0.5; }
+    .complete { color: green; font-weight: bold; }
+    .button-scan { background: #d32f2f; color: white; padding: 15px; text-align: center; border-radius: 10px; cursor: pointer; margin-top: 20px; font-size: 16px; }
+    .hidden { display: none; }
+    .certificate { text-align: center; margin-top: 30px; }
+    .certificate img { width: 100%; max-width: 300px; border-radius: 12px; margin-bottom: 20px; }
+    .photo-options img { width: 70px; margin: 10px; cursor: pointer; border-radius: 8px; border: 2px solid transparent; }
+    .photo-options img.selected { border-color: #d32f2f; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>소방 안전 방탈출 게임</h1>
+    <p>미션을 완료하고 화재 위험에서 탈출하세요!</p>
+  </header>
+  <div class="container">
+    <div class="mission" id="mission1">화재 발생 시 행동요령 <span class="complete">✓</span></div>
+    <div class="mission locked" id="mission2">소화기 사용법</div>
+    <div class="mission locked" id="mission3">화재 유형별 대처법</div>
+    <div class="mission locked" id="mission4">대피 요령</div>
+    <div class="mission locked" id="mission5">화재 예방</div>
+
+    <div class="button-scan" onclick="scanQRCode()">📷 QR 코드 스캔하기</div>
+
+    <div class="certificate hidden" id="completion">
+      <h2>🎉 미션 완료!</h2>
+      <p>축하합니다! 소방 안전 미션을 모두 완료했습니다.</p>
+      <div class="photo-options">
+        <img src="fire1.png" onclick="selectImage(this)">
+        <img src="fire2.png" onclick="selectImage(this)">
+        <img src="fire3.png" onclick="selectImage(this)">
+        <img src="fire4.png" onclick="selectImage(this)">
+      </div>
+      <button onclick="takePhoto()">📸 사진 찍기</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedImage = null;
+
+    function scanQRCode() {
+      // 실제 앱에서는 QR 인식 후 미션 해제 로직 추가
+      alert("QR 코드가 인식되었습니다. 다음 미션이 해제됩니다.");
+      const nextMission = document.querySelector(".mission.locked");
+      if (nextMission) {
+        nextMission.classList.remove("locked");
+        nextMission.querySelector(".complete")?.remove();
+        nextMission.innerHTML += ' <span class="complete">✓</span>';
+      } else {
+        document.getElementById("completion").classList.remove("hidden");
+      }
+    }
+
+    function selectImage(img) {
+      document.querySelectorAll('.photo-options img').forEach(el => el.classList.remove('selected'));
+      img.classList.add('selected');
+      selectedImage = img.src;
+    }
+
+    function takePhoto() {
+      if (!selectedImage) {
+        alert("사진을 찍기 전에 이미지를 선택해주세요!");
+        return;
+      }
+      alert("카메라가 실행됩니다 (시연용 안내). 선택한 이미지와 함께 사진을 저장할 수 있습니다.");
+      // 실제 모바일에서는 WebRTC 등을 사용한 카메라 API 연결 필요
+    }
+  </script>
+</body>
+</html>
